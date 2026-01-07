@@ -1,0 +1,17 @@
+services:
+  speedtest:
+    container_name: speedtest
+    image: ghcr.io/librespeed/speedtest:latest
+    restart: unless-stopped
+    expose:
+      - "8080"
+    environment:
+      MODE: standalone
+        # IPINFO_APIKEY: "${SPEEDTEST_IPINFO_APIKEY}"
+      DISTANCE: "km"
+    networks:
+      - cloudflared_net
+
+networks:
+  cloudflared_net:
+    external: true
