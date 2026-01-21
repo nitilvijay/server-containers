@@ -1,0 +1,17 @@
+services:
+ cloudflared:
+    image: cloudflare/cloudflared:latest
+    user: root
+    container_name: cloudflared
+    restart: always
+    volumes:
+      - ./config:/root/.cloudflared:ro
+
+    command: tunnel --config=/root/.cloudflared/config.yml run
+    networks:
+      - cloudflared_net
+
+
+networks:
+  cloudflared_net:
+    external: true

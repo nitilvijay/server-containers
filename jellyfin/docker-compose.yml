@@ -1,0 +1,39 @@
+name: jellyfin
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    shm_size: 1gb
+    networks:
+      - cloudflared_net
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+#This is the long form of writing the above code/mapping
+      - type: bind
+        # Path on the Host
+        source: ./media
+        # Path the Container sees
+        target: /media
+        read_only: true
+
+      - type: bind
+        source: ./media2
+        target: /media2
+        read_only: true
+
+    restart: 'unless-stopped'
+   #Hardware acceleration, video acceleration api
+    extends:
+      file: hwaccel.transcoding.yml
+      service: vaapi
+
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://jellyfin.nitilvijay.me
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+
+networks:
+  cloudflared_net:
+    external: true

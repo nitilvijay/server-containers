@@ -1,0 +1,16 @@
+services:
+  n8n:
+    container_name: n8n
+    image: docker.n8n.io/n8nio/n8n
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+      - ./local-files:/files
+    networks:
+      - cloudflared_net
+
+networks:
+  cloudflared_net:
+    external: true
