@@ -1,0 +1,16 @@
+services:
+
+  otrecorder:
+    container_name: owntracks
+    image: owntracks/recorder
+    volumes:
+      - ./config:/config
+      - ./store:/store
+    restart: unless-stopped
+    environment:
+      - OTR_PORT=0 # No MQTT
+    networks:
+      - cloudflared_net
+networks:
+  cloudflared_net:
+    external: true
